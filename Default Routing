@@ -9,6 +9,7 @@ This lab demonstrates the setup and verification of **default routing** between 
 [PC0] --- [Switch0] --- [Router0] --- [Router1] --- [Switch1] --- [PC1]
 
 
+
 - **Router0** connected to **Router1**
 - **Switches** connected to PCs and routers
 - **End Devices** (PC0 and PC1) to test network connectivity
