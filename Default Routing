@@ -1,0 +1,127 @@
+# Default Routing Configuration Lab
+
+This lab demonstrates the setup and verification of **default routing** between two or more networks using Cisco routers and switches. The goal is to ensure communication across networks using a **default route** configuration.
+
+---
+
+## Lab Topology
+
+[PC0] --- [Switch0] --- [Router0] --- [Router1] --- [Switch1] --- [PC1]
+
+
+- **Router0** connected to **Router1**
+- **Switches** connected to PCs and routers
+- **End Devices** (PC0 and PC1) to test network connectivity
+
+---
+
+## Devices Used
+
+- 2 Routers (e.g., 2911)
+- 2 Switches (e.g., 2960)
+- 2 PCs
+
+---
+
+## IP Addressing Scheme
+
+| Device   | Interface        | IP Address      | Subnet Mask       |
+|----------|------------------|-----------------|-------------------|
+| PC0      | NIC               | 192.168.1.10    | 255.255.255.0     |
+| Switch0  | N/A               | (default VLAN1) |                   |
+| Router0  | Gig0/0            | 192.168.1.1     | 255.255.255.0     |
+| Router0  | Gig0/1            | 10.0.0.1        | 255.255.255.252   |
+| Router1  | Gig0/0            | 10.0.0.2        | 255.255.255.252   |
+| Router1  | Gig0/1            | 192.168.2.1     | 255.255.255.0     |
+| Switch1  | N/A               | (default VLAN1) |                   |
+| PC1      | NIC               | 192.168.2.10    | 255.255.255.0     |
+
+---
+
+## Step-by-Step Configuration
+
+### 1. Configure PC IP Addresses
+
+- On **PC0**:
+  - IP address: `192.168.1.10`
+  - Subnet mask: `255.255.255.0`
+  - Default gateway: `192.168.1.1`
+- On **PC1**:
+  - IP address: `192.168.2.10`
+  - Subnet mask: `255.255.255.0`
+  - Default gateway: `192.168.2.1`
+
+---
+
+### 2. Configure Router0
+
+enable configure terminal
+
+hostname Router0
+
+interface GigabitEthernet0/0 ip address 192.168.1.1 255.255.255.0 no shutdown
+
+interface GigabitEthernet0/1 ip address 10.0.0.1 255.255.255.252 no shutdown
+
+ip route 0.0.0.0 0.0.0.0 10.0.0.2
+
+end write memory
+
+---
+
+### 3. Configure Router1
+
+enable configure terminal
+
+hostname Router1
+
+interface GigabitEthernet0/0 ip address 10.0.0.2 255.255.255.252 no shutdown
+
+interface GigabitEthernet0/1 ip address 192.168.2.1 255.255.255.0 no shutdown
+
+ip route 0.0.0.0 0.0.0.0 10.0.0.1
+
+end write memory
+
+---
+
+### 4. Verify Connectivity
+
+On both routers, use:
+
+show ip route
+
+show ip interface brief
+
+to verify interfaces are up and routes are correct.
+
+From **PC0**, ping **PC1**:
+
+ping 192.168.2.10
+
+From **PC1**, ping **PC0**:
+
+ping 192.168.1.10
+
+---
+
+## Expected Result
+
+- All pings should succeed.
+- The routing table on each router should show a **default route** (`S* 0.0.0.0/0`).
+
+---
+
+## Conclusion
+
+This lab illustrates the configuration of **default routes** between two networks across routers, enabling full end-to-end communication even without manually configuring all routes.
+
+✅ **Lab Completed Successfully**
+
+---
+
+## Author
+
+*Created by [Nikhil Pandey]*
+
+---
